@@ -25,7 +25,7 @@ async def call_gemini_vision(image_bytes: bytes, mime_type: str, prompt: str, sc
     if not has_gemini_key():
         return None
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={api_key}"
     
     b64_data = base64.b64encode(image_bytes).decode("utf-8")
     
@@ -85,7 +85,7 @@ async def call_gemini_text(prompt: str, schema_desc: str) -> Optional[Dict[str, 
     if not has_gemini_key():
         return None
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={api_key}"
     
     system_instruction = (
         "You are Food Verse AI, an expert culinary and nutrition intelligence system. "
