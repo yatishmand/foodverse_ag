@@ -5,7 +5,18 @@ let resolvedApiUrl = import.meta.env.VITE_API_URL || null;
 async function getBaseUrl() {
   if (resolvedApiUrl) return resolvedApiUrl;
 
-  // Auto-detect whether backend is on port 8000 or 8001
+  // 1. In production on Vercel or under `vercel dev`, requests to /api route through same-origin rewrite
+  try {
+    const sameOriginRes = await fetch('/api/health', { signal: AbortSignal.timeout(1000) });
+    if (sameOriginRes.ok) {
+      resolvedApiUrl = '';
+      return resolvedApiUrl;
+    }
+  } catch {
+    // Not on same-origin rewrite, fallback to standalone local servers
+  }
+
+  // 2. Auto-detect whether standalone backend is on port 8000 or 8001
   const candidatePorts = [8000, 8001];
   for (const port of candidatePorts) {
     try {

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "foodverse-backend": {
+      "root": "backend",
+      "framework": "fastapi",
+      "buildCommand": "pip install -r requirements.txt"
+    },
+    "frontend": {
+      "root": "frontend",
+      "framework": "vite",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "foodverse-backend",
+          "format": "url",
+          "env": "BACKEND_URL"
+        }
+      ]
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "foodverse-backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ]
+}
